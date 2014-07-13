@@ -62,7 +62,7 @@ object SearchAPI extends RestHelper with Loggable {
       }
       val url_es = Props.get("url_es","http://localhost:9200")
       val request =
-        url(url_es+"/_search?"+queryString.getOrElse(""))
+        url(url_es+"/people/_search?"+queryString.getOrElse(""))
         .GET
       val response = getAPIResponse(request)
     JsonResponse(response.body,("Access-Control-Allow-Origin","*") :: Nil, Nil, response.code)
