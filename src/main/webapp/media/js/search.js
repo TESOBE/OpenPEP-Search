@@ -122,7 +122,7 @@ function getAllRecordsJson(){
     "from":0,
     "size":2*limit,
     "query":{"match_all":{}},
-    "sort":["Last Name"]
+    "sort":["LastName"]
   }
   return JSON.stringify(allRecordsJson)
 }
@@ -155,12 +155,12 @@ function createSearchJson(){
   // }
 
   if (res && res != ""){
-    var resMatch = {"match":{"Country of residence":res}}
+    var resMatch = {"match":{"Residence":res}}
     searchJson.query.bool.must.push(resMatch)
   }
 
   if (cit && cit != ""){
-    var citMatch = {"match":{"Country of Citizenship":cit}}
+    var citMatch = {"match":{"Citizenship":cit}}
     searchJson.query.bool.must.push(citMatch)
   }
   return JSON.stringify(searchJson)
@@ -172,13 +172,13 @@ function getNameArray(){
   var name_array = new Array()
   var name_field = $('input[name=field]:checked').val()
   if(name_field == "first")
-   name_array.push("First Name")
+   name_array.push("FirstName")
   else if (name_field == "last")
-    name_array.push("Last Name")
+    name_array.push("LastName")
   else
-    name_array.push("First Name")
-    name_array.push("Middle Name")
-    name_array.push("Last Name")
+    name_array.push("FirstName")
+    name_array.push("MiddleName")
+    name_array.push("LastName")
   return name_array
 }
 
@@ -191,12 +191,12 @@ function displayData(data) {
     $('#display').append("<table id='resultTable'><tr><th>First</th><th>Middle</th><th>Surname</th><th>Position</th><th>Nationality</th><th>Residence</th></tr></table>")
     $.each(data.hits, function(i, person) {
       $('#resultTable').append("<tr class='personRow' name="+i+" id='personRow"+i+"'></tr>")
-      $('#personRow'+i).append("<td>"+person._source["First Name"]+"</td>")
-      $('#personRow'+i).append("<td>"+person._source["Middle Name"]+"</td>")
-      $('#personRow'+i).append("<td>"+person._source["Last Name"]+"</td>")
+      $('#personRow'+i).append("<td>"+person._source["FirstName"]+"</td>")
+      $('#personRow'+i).append("<td>"+person._source["MiddleName"]+"</td>")
+      $('#personRow'+i).append("<td>"+person._source["LastName"]+"</td>")
       $('#personRow'+i).append("<td>"+person._source["Position"]+"</td>")
-      $('#personRow'+i).append("<td>"+person._source["Country of Citizenship"]+"</td>")
-      $('#personRow'+i).append("<td>"+person._source["Country of residence"]+"</td>")
+      $('#personRow'+i).append("<td>"+person._source["Citizenship"]+"</td>")
+      $('#personRow'+i).append("<td>"+person._source["Residence"]+"</td>")
     })
     if(data.total > limit){
       $('#display').append('<div id="moreResults"><img src="/media/images/arrow.png">More Results</div>')
@@ -228,7 +228,7 @@ function enableGetDetailsClick(hits) {
 
 
 // TODO: right now we use the source field 'Register' to get the person, should be replaced by a unique id
-function getIdDetailsFor(name, id){
+function getIdDetailsFor(id){
   $.ajax({
     type: "GET",
     url: '/search?source={"query":{"bool":{"must":{"match":{"Register":"'+id+'"}}}}}',
@@ -247,14 +247,14 @@ function getIdDetailsFor(name, id){
 
 function fillDetailPage(person){
   $("#title_field").append(person._source['Title'])
-  $("#first_name_field").append(person._source['First Name'])
-  $("#last_name_field").append(person._source['Last Name'])
-  $("#other_names_field").append(person._source['Middle Name'])
+  $("#first_name_field").append(person._source['FirstName'])
+  $("#last_name_field").append(person._source['LastName'])
+  $("#other_names_field").append(person._source['MiddleName'])
   // $("#original_spelling_field").append(person._source[''])
   $("#position_field").append(person._source['Position'])
   // $("#birthday_field").append(person._source[''])
-  $("#citizenship_field").append(person._source['Country of Citizenship'])
-  $("#residence_field").append(person._source['Country of residence'])
+  $("#citizenship_field").append(person._source['Citizenship'])
+  $("#residence_field").append(person._source['Residence'])
   // $("#in_office_since_field").append(person._source[''])
   // $("#out_office_since_field").append(person._source[''])
   // $("#expected_until_field").append(person._source[''])
